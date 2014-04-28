@@ -23,7 +23,7 @@ SDK 介绍
 SDK开发文档
 
 ## Example
-Android SDK开发示例，提供该第三方开发者使用
+Android SDK开发示例，提供给第三方开发者使用
 
 ## CHANGELOG.md
 SDK更新说明
