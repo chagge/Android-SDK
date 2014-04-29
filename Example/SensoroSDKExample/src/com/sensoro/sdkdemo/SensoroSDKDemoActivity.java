@@ -19,19 +19,7 @@ import android.widget.EditText;
 import com.secsoro.sdkdemo.R;
 
 public class SensoroSDKDemoActivity extends Activity implements OnClickListener {
-	public static final String SENSORO_ACTION = "android.intent.action.SENSORO_ACTION"; // 自定义广播action名称
-	public static final String STRING_LINE_FEED = "\n";
-	public static final String STRING_ENTER_SPOT = "enter_spot:";
-	public static final String STRING_ATION = "ation:";
 
-	public static final String MAJOR = "  major=";
-	public static final String MINOR = "  minor=";
-	public static final String ZONE = "  zone=";
-	public static final String SPOT = "  spot=";
-	public static final String SECONDS = "  seconds=";
-
-	public static final String ACTIVE_EVENT = "fixedcorner";
-	public static final String TYPE = "type";
 	/** sdk给我们返回的消息都打印在这里 */
 	private EditText outputEt;
 	/** 清空打印信息,信息有时候太多了就清除掉 */
@@ -82,22 +70,8 @@ public class SensoroSDKDemoActivity extends Activity implements OnClickListener 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			String stringExtra = intent
-					.getStringExtra(SensoroFsmService.BROADCAST_NAME);
-			if (stringExtra.equals(SensoroFsmService.ENTER_FIXCORNER)) {
-				isInFixCorner = true;
-				logStr.append(context.getString(R.string.enter_fixedcorner)
-						+ STRING_LINE_FEED);
-			} else if (stringExtra.equals(SensoroFsmService.LEAVE_FIXCORNER)) {
-				isInFixCorner = false;
-				logStr.append(context.getString(R.string.leave_fixedcorner)
-						+ STRING_LINE_FEED);
-			} else if (stringExtra.equals(SensoroFsmService.ENTER_MESSAGE)) {
-				String message = intent
-						.getStringExtra(SensoroFsmService.ENTER_MESSAGE);
-				logStr.append(message + STRING_LINE_FEED);
-			}
-
+			logStr.append(intent
+					.getStringExtra(SensoroFsmService.BROADCAST_NAME));
 			outputEt.setText(logStr);
 			outputEt.setSelection(outputEt.getText().length(), outputEt
 					.getText().length());
@@ -125,7 +99,7 @@ public class SensoroSDKDemoActivity extends Activity implements OnClickListener 
 				// 如果达到摇一摇的标准,判断是否正在进行获取优惠券操作
 				if (isInFixCorner) {
 					logStr.append(getString(R.string.shark_it_off)
-							+ STRING_LINE_FEED);
+							+ SensoroFsmService.STRING_LINE_FEED);
 					outputEt.setText(logStr);
 					outputEt.setSelection(outputEt.getText().length(), outputEt
 							.getText().length());

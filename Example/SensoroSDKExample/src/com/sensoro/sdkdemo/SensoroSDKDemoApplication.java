@@ -56,7 +56,6 @@ public class SensoroSDKDemoApplication extends Application {
 			Intent intent = new Intent();
 			intent.setClass(this, SensoroFsmService.class);
 			sensoroSense.startService(this, intent, false, null);
-			
 			/**
 			 * 绑定UID.
 			 * 该操作为可选操作,只有当APP需要与用户唯一绑定的时候使用.
