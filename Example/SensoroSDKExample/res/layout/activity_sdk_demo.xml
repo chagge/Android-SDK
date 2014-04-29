@@ -15,10 +15,23 @@
         <requestFocus />
     </EditText>
 
-    <android.widget.Button
-        android:id="@+id/clear_edittext_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/clear_edittext" />
+        android:layout_height="wrap_content" >
+
+        <android.widget.Button
+            android:id="@+id/clear_edittext_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_edittext" />
+
+        <android.widget.Button
+            android:id="@+id/start_stop_service_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/start_service" />
+    </LinearLayout>
 
 </LinearLayout>

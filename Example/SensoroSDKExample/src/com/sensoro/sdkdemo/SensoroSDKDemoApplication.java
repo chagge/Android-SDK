@@ -1,5 +1,8 @@
 package com.sensoro.sdkdemo;
 
+import java.util.HashMap;
+
+import com.sensoro.beacon.core.Configuration.Builder;
 import com.sensoro.beacon.core.SensoroSense;
 
 import android.app.Application;
@@ -22,52 +25,57 @@ public class SensoroSDKDemoApplication extends Application {
 	@Override
 	public void onCreate() {
 		initBluetooth();
-		startFsmService();
 		super.onCreate();
 	}
 
-	private void startFsmService() {
+	public void startFsmService() {
 		/**
-		 * 只有设备支持BLE并且蓝牙开启,才能保证SDK正常使用.
-		 * 用户可以自行处理.
+		 * 只有设备支持BLE并且蓝牙开启,才能保证SDK正常使用. 用户可以自行处理.
 		 */
 		if (isSupportBLE && isBTOpen) {
 			/**
 			 * 获取SensoroSense的实例. 第一个参数为context;
 			 * 第二个参数是APP_ID,不同APP需要向Sensoro咨询申请不同的APP_ID;
-			 * 第三个参数是APP_KEY,不同APP需要不同的APP_KEY.该参数暂未使用.
-			 * eg:	demo中设置测试APP_ID为1,APP_KEY为null.
+			 * 第三个参数是APP_KEY,不同APP需要不同的APP_KEY.该参数暂未使用. eg:
+			 * demo中设置测试APP_ID为1,APP_KEY为null.
 			 * 
 			 */
-			sensoroSense = SensoroSense.getIntance(this, APP_ID, APP_KEY);
+			if (sensoroSense == null)
+				sensoroSense = SensoroSense.getIntance(this, APP_ID, APP_KEY);
 			/**
 			 * 启动用户自定义Service,获取Beacon触发的回调函数. 第一个参数为Context;
-			 * 第二个参数intent表示启动用户自定义service的intent; 
-			 * 第三个参数表示服务进程关闭以后是否允许重新启动
-			 * 第四个参数为Map构成的Log可选项,默认log参数均为true,具体描述如下：
-			 * 	options { 
-			 * 		// 可选启动参数 
-			 * 		bool local_log,表示本地log存储
-			 * 		bool remote_log,表示向SDK后台发送log信息
-			 * 	}
-			 * eg:	demo中设置允许重新启动,log默认均开启.
+			 * 第二个参数intent表示启动用户自定义service的intent; 第三个参数表示服务进程关闭以后是否允许重新启动
+			 * 第四个参数为Map构成的Log可选项,默认log参数均为true,具体描述如下： options { // 可选启动参数 bool
+			 * local_log,表示本地log存储 bool remote_log,表示向SDK后台发送log信息 } eg:
+			 * demo中设置允许重新启动,log默认均开启.
 			 * 
 			 */
 			Intent intent = new Intent();
 			intent.setClass(this, SensoroFsmService.class);
-			sensoroSense.startService(this, intent, false, null);
+			Builder builder = new Builder();
+			HashMap<String, Boolean> option = new HashMap<String, Boolean>();
+			option.put("environment", true);
+			builder.setExtra(option);
+			sensoroSense.setConfiguration(builder.create());
+			sensoroSense.startService(this, intent);
 			/**
-			 * 绑定UID.
-			 * 该操作为可选操作,只有当APP需要与用户唯一绑定的时候使用.
-			 * eg:	摇一摇可以给用户产生一张优惠券,但是这张优惠券只能由摇到的该用户使用,其他用户查询不到且不能使用.
-			 * 		因此,需要将service绑定到特定用户上,通过该函数进行绑定.
-			 * 		该函数可以在任何时候进行调用,bind不同的用户.
+			 * 绑定UID. 该操作为可选操作,只有当APP需要与用户唯一绑定的时候使用. eg:
+			 * 摇一摇可以给用户产生一张优惠券,但是这张优惠券只能由摇到的该用户使用,其他用户查询不到且不能使用.
+			 * 因此,需要将service绑定到特定用户上,通过该函数进行绑定. 该函数可以在任何时候进行调用,bind不同的用户.
 			 */
-//			sensoroSense.bindUid("4");
+			// sensoroSense.bindUid("4");
 		} else {
-			//TODO 用户自行处理,demo中禁止启动APP
+			// TODO 用户自行处理,demo中禁止启动APP
 			System.exit(0);
 		}
+	}
+
+	public void stopFsmService() {
+		if (sensoroSense == null)
+			sensoroSense = SensoroSense.getIntance(this, APP_ID, APP_KEY);
+		Intent intent = new Intent();
+		intent.setClass(this, SensoroFsmService.class);
+		sensoroSense.stopService(intent);
 	}
 
 	/**

@@ -1,6 +1,10 @@
 package com.sensoro.sdkdemo;
 
+import java.util.List;
+
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +28,15 @@ public class SensoroSDKDemoActivity extends Activity implements OnClickListener 
 	private EditText outputEt;
 	/** 清空打印信息,信息有时候太多了就清除掉 */
 	private Button clearBtn;
+	/** 开启或关闭服务按钮*/
+	private Button startOrSpotBtn;
 	/** 打印信息的字符串,当sdk回调方法时,将回调的信息添加进去,打印在EditText上 */
 	private StringBuilder logStr = new StringBuilder();
 
 	private SensorManager mSensorManager = null;
 	private boolean isInFixCorner = false; // 是否进入淘金角
+	private SensoroSDKDemoApplication application;
+	private boolean fsmServiceIsStart = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +47,15 @@ public class SensoroSDKDemoActivity extends Activity implements OnClickListener 
 
 	/** 初始化界面及Receiver等等 */
 	private void init() {
+		application = (SensoroSDKDemoApplication) getApplication();
 		outputEt = (EditText) findViewById(R.id.output_et);
 		outputEt.setKeyListener(null);
 		outputEt.setMovementMethod(ScrollingMovementMethod.getInstance());
 		clearBtn = (Button) findViewById(R.id.clear_edittext_button);
-		clearBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				outputEt.setText("");
-				logStr = new StringBuilder();
-			}
-		});
+		startOrSpotBtn = (Button) findViewById(R.id.start_stop_service_button);
+		startOrSpotBtn.setOnClickListener(this);
+		clearBtn.setOnClickListener(this);
+		
 		logStr.append(outputEt.getText().toString());
 		registerMyReceiver();// 注册MyReceiver
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -63,6 +69,26 @@ public class SensoroSDKDemoActivity extends Activity implements OnClickListener 
 
 	@Override
 	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.clear_edittext_button:
+			outputEt.setText("");
+			logStr = new StringBuilder();
+			break;
+		case R.id.start_stop_service_button:
+			if(fsmServiceIsStart){
+				application.stopFsmService();
+				startOrSpotBtn.setText(getString(R.string.start_service));
+				fsmServiceIsStart = false;
+			}else{
+				application.startFsmService();
+				startOrSpotBtn.setText(getString(R.string.stop_service));
+				fsmServiceIsStart = true;
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	private BroadcastReceiver sensoroBroadcastReceiver = new BroadcastReceiver() {

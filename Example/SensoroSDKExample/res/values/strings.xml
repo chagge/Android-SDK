@@ -7,6 +7,7 @@
     <string name="passivity">Log</string>
     <string name="initiative">BeaconList</string>
     <string name="start_service">启动服务</string>
+    <string name="stop_service">停止服务</string>
     <string name="start_fsmservice">启动FsmService服务</string>
     <string name="message_enter">进店</string>
     <string name="message_leave">离店</string>

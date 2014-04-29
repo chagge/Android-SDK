@@ -18,7 +18,7 @@ import com.sensoro.beacon.core.Zone;
  */
 
 public class SensoroFsmService extends FsmService {
-	private static final String TAG = "SensoroFsmService";
+	public static final String TAG = "SensoroFsmService";
 	public static final String ENTER_SPOT = "enter_spot"; // SDK
 															// 回调action交互动作.详见SPOT定义.
 
@@ -55,7 +55,7 @@ public class SensoroFsmService extends FsmService {
 	public static final String PARAM = "  param=";
 
 	/**
-	 * Description: 当sdk检测到某个Beacon时回调该方法.(硬件层回调方法)
+	 * Description: 进入物理区域,当sdk检测到某个Beacon时回调该方法.(硬件层回调方法)
 	 *          该方法不必联网,属于硬件层的回调方法.其中的Beacon对象是由首次布置Beacon时设置好的
 	 *          无法更改.在onGone这个Beacon之前不会再次回调
 	 * 
@@ -83,7 +83,7 @@ public class SensoroFsmService extends FsmService {
 	}
 
 	/**
-	 * Description: 当sdk数秒内没有再接收到某个活动中的Beacon信号时,回调此方法.(硬件层回调方法)
+	 * Description: 离开物理区域,当sdk数秒内没有再接收到某个活动中的Beacon信号时,回调此方法.(硬件层回调方法)
 	 *          该方法不必联网,属于硬件层的回调方法.其中的Beacon对象是由首次布置Beacon时设置好的
 	 *          无法更改.在onGone这个Beacon之前不会再次回调
 	 * @param Beacon
@@ -157,7 +157,7 @@ public class SensoroFsmService extends FsmService {
 		parameterStringBuilder.append(spot.getName());
 		parameterStringBuilder.append(STRING_LINE_FEED);
 
-		Map<String, String> param = zone.getParam();
+		Map<String, String> param = spot.getParam();
 		if (param != null) { // 开发者在SDK server中没配置可能为空
 			parameterStringBuilder.append(PARAM);
 			parameterStringBuilder.append(param.toString());
