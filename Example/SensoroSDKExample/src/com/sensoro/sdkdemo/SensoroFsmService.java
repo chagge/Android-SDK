@@ -51,18 +51,19 @@ public class SensoroFsmService extends FsmService {
 	public static final String SPOT = "  spot=";
 	public static final String SECONDS = "  seconds=";
 	public static final String NAME = "  name=";
+	public static final String ZID = "  zid=";
 	public static final String PARAM = "  param=";
 
 	/**
-	 * Description: 当sdk检测到某个Beacon时回调该方法.
+	 * Description: 当sdk检测到某个Beacon时回调该方法.(硬件层回调方法)
+	 *          该方法不必联网,属于硬件层的回调方法.其中的Beacon对象是由首次布置Beacon时设置好的
+	 *          无法更改.在onGone这个Beacon之前不会再次回调
 	 * 
 	 * @param Beacon
 	 *            beacon {@link Spot}
 	 * @return null
 	 * 
-	 * @example 当我们的sdk检测到某个正在工作的beacon时,讲回调此方法返回我们检测到的Beacon对象
-	 *          该方法不必联网,属于硬件层的回调方法.其中的Beacon对象是由首次布置Beacon时设置好的
-	 *          无法更改.在onGone这个Beacon之前不会再次回调
+	 *    		
 	 * 
 	 * */
 	@Override
@@ -82,13 +83,12 @@ public class SensoroFsmService extends FsmService {
 	}
 
 	/**
-	 * Description: 当sdk数秒内没有再接收到某个活动中的Beacon信号时,回调此方法.
-	 * 
+	 * Description: 当sdk数秒内没有再接收到某个活动中的Beacon信号时,回调此方法.(硬件层回调方法)
+	 *          该方法不必联网,属于硬件层的回调方法.其中的Beacon对象是由首次布置Beacon时设置好的
+	 *          无法更改.在onGone这个Beacon之前不会再次回调
 	 * @param Beacon
 	 *            beacon {@link Spot}
 	 * @return null
-	 * 
-	 * @example 当SDK检测到某个Beacon回调onNew方法后,数秒内没有再收到此Beacon的信号 将视为
 	 * 
 	 * */
 	@Override
@@ -108,16 +108,13 @@ public class SensoroFsmService extends FsmService {
 	}
 
 	/**
-	 * Description: 进入一个预定义的点时回调该方法.
+	 * Description: 进入一个预定义的点时回调该方法.(逻辑层回调方法)
 	 * 
-	 * @param Spot
+	 * @param Spot 
 	 *            spot {@link Spot}
 	 * @param Zone
 	 *            zone {@link Zone}
 	 * @return null
-	 * 
-	 * @example demo中Spot的param属性,自定义参数key为type,type返回值为fixedcorner表示进入摇一摇区域.
-	 *          满足上述条件,则构成进入摇一摇区域的业务. demo中配置摇一摇区域为一个spot触发,开发者也可以自定义由一个Zone来触发.
 	 * 
 	 * */
 	@Override
@@ -131,10 +128,6 @@ public class SensoroFsmService extends FsmService {
 
 		Map<String, String> param = spot.getParam();
 		if (param != null) { // 开发者在SDK server中没配置可能为空
-			// String type = param.get(TYPE);
-			// if (type != null && type.equals(FIXEDCORNER)) {
-			// 进入点参数type为fixcorner --> 定义为进入摇一摇区域
-			// parameterStringBuilder.append(FIXEDCORNER);
 			parameterStringBuilder.append(PARAM);
 			parameterStringBuilder.append(param.toString());
 			parameterStringBuilder.append(STRING_LINE_FEED);
@@ -146,16 +139,13 @@ public class SensoroFsmService extends FsmService {
 	}
 
 	/**
-	 * Description: 离开一个预定义的点时回调该方法.
+	 * Description: 离开一个预定义的点时回调该方法.(逻辑层回调方法)
 	 * 
 	 * @param Spot
 	 *            spot {@link Spot}
 	 * @param Zone
 	 *            zone {@link Zone}
 	 * @return null
-	 * 
-	 * @example demo中Spot的param属性,自定义参数key为type,type返回值为fixedcorner表示离开摇一摇区域.
-	 *          满足上述条件,则构成离开摇一摇区域的业务. demo中配置摇一摇区域为一个spot触发,开发者也可以自定义由一个Zone来触发.
 	 * 
 	 * */
 	@Override
@@ -167,12 +157,8 @@ public class SensoroFsmService extends FsmService {
 		parameterStringBuilder.append(spot.getName());
 		parameterStringBuilder.append(STRING_LINE_FEED);
 
-		Map<String, String> param = spot.getParam();
+		Map<String, String> param = zone.getParam();
 		if (param != null) { // 开发者在SDK server中没配置可能为空
-			// String type = param.get(TYPE);
-			// if (type != null && type.equals(FIXEDCORNER)) {
-			// 进入点参数type为fixcorner --> 定义为进入摇一摇区域
-			// parameterStringBuilder.append(FIXEDCORNER);
 			parameterStringBuilder.append(PARAM);
 			parameterStringBuilder.append(param.toString());
 			parameterStringBuilder.append(STRING_LINE_FEED);
@@ -182,9 +168,9 @@ public class SensoroFsmService extends FsmService {
 		intent.setAction(SENSORO_ACTION);
 		sendBroadcast(intent);
 	}
-	
+
 	/**
-	 * Description: 在一个预定点停留时回调该方法.
+	 * Description: 在一个预定点停留时回调该方法.(逻辑层回调方法)
 	 * 
 	 * @param Spot
 	 *            spot {@link Spot}
@@ -192,24 +178,17 @@ public class SensoroFsmService extends FsmService {
 	 *            zone {@link Zone}
 	 * @return null
 	 * 
-	 * @example demo中Spot的param属性,自定义参数key为type,type返回值为fixedcorner表示离开摇一摇区域.
-	 *          满足上述条件,则构成离开摇一摇区域的业务. demo中配置摇一摇区域为一个spot触发,开发者也可以自定义由一个Zone来触发.
-	 * 
 	 * */
 	@Override
 	public void onStaySpot(Spot spot, Zone zone, long seconds) {
 		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
 		StringBuilder parameterStringBuilder = new StringBuilder();
-		parameterStringBuilder.append(STRING_LEAVE_SPOT);
+		parameterStringBuilder.append(STRING_STAY_SPOT);
 		parameterStringBuilder.append(NAME);
 		parameterStringBuilder.append(spot.getName());
 		parameterStringBuilder.append(STRING_LINE_FEED);
 		Map<String, String> param = spot.getParam();
 		if (param != null) { // 开发者在SDK server中没配置可能为空
-			// String type = param.get(TYPE);
-			// if (type != null && type.equals(FIXEDCORNER)) {
-			// 进入点参数type为fixcorner --> 定义为进入摇一摇区域
-			// parameterStringBuilder.append(FIXEDCORNER);
 			parameterStringBuilder.append(PARAM);
 			parameterStringBuilder.append(param.toString());
 			parameterStringBuilder.append(STRING_LINE_FEED);
@@ -220,23 +199,101 @@ public class SensoroFsmService extends FsmService {
 		sendBroadcast(intent);
 	}
 
+	/**
+	 * Description: 进入一个预定义的区域时回调该方法.(逻辑层回调方法)
+	 * 
+	 * @param Spot
+	 *            spot {@link Spot}
+	 * @param Zone
+	 *            zone {@link Zone}
+	 * @return null
+	 * 
+	 * */
 	@Override
 	public void onEnterZone(Zone zone, Spot spot) {
-		Log.v(TAG, "onEnterZone--" + zone.toString());
-	}
+		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
+		StringBuilder parameterStringBuilder = new StringBuilder();
+		parameterStringBuilder.append(STRING_ENTER_ZONE);
+		parameterStringBuilder.append(ZID);
+		parameterStringBuilder.append(zone.getZid());
+		parameterStringBuilder.append(STRING_LINE_FEED);
 
-	@Override
-	public void onLeaveZone(Zone zone, Spot spot) {
-		Log.v(TAG, "onLeaveZone--" + zone.toString());
-	}
-
-	@Override
-	public void onStayZone(Zone zone, Spot spot, long seconds) {
-		Log.v(TAG, "onStayZone--" + zone.toString());
+		Map<String, String> param = spot.getParam();
+		if (param != null) { // 开发者在SDK server中没配置可能为空
+			parameterStringBuilder.append(PARAM);
+			parameterStringBuilder.append(param.toString());
+			parameterStringBuilder.append(STRING_LINE_FEED);
+		}
+		Intent intent = new Intent();
+		intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+		intent.setAction(SENSORO_ACTION);
+		sendBroadcast(intent);
 	}
 
 	/**
-	 * Description: 发生预定义的交互并获得结果
+	 * Description: 离开一个预定的区域时回调方法(逻辑层回调方法)
+	 * 
+	 * @param Spot
+	 *            spot {@link Spot}
+	 * @param Zone
+	 *            zone {@link Zone}
+	 * @return null
+	 * 
+	 * */
+	@Override
+	public void onLeaveZone(Zone zone, Spot spot) {
+		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
+		StringBuilder parameterStringBuilder = new StringBuilder();
+		parameterStringBuilder.append(STRING_LEAVE_ZONE);
+		parameterStringBuilder.append(ZID);
+		parameterStringBuilder.append(zone.getZid());
+		parameterStringBuilder.append(STRING_LINE_FEED);
+
+		Map<String, String> param = spot.getParam();
+		if (param != null) { // 开发者在SDK server中没配置可能为空
+			parameterStringBuilder.append(PARAM);
+			parameterStringBuilder.append(param.toString());
+			parameterStringBuilder.append(STRING_LINE_FEED);
+		}
+		Intent intent = new Intent();
+		intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+		intent.setAction(SENSORO_ACTION);
+		sendBroadcast(intent);
+	}
+
+	/**
+	 * Description: 在一个预定区域停留时回调该方法.(逻辑层回调方法)
+	 * 
+	 * @param Spot
+	 *            spot {@link Spot}
+	 * @param Zone
+	 *            zone {@link Zone}
+	 * @return null
+	 * 
+	 * */
+	@Override
+	public void onStayZone(Zone zone, Spot spot, long seconds) {
+		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
+		StringBuilder parameterStringBuilder = new StringBuilder();
+		parameterStringBuilder.append(STRING_STAY_ZONE);
+		parameterStringBuilder.append(ZID);
+		parameterStringBuilder.append(zone.getZid());
+		parameterStringBuilder.append(STRING_LINE_FEED);
+
+		Map<String, String> param = spot.getParam();
+		if (param != null) { // 开发者在SDK server中没配置可能为空
+			parameterStringBuilder.append(PARAM);
+			parameterStringBuilder.append(param.toString());
+			parameterStringBuilder.append(STRING_LINE_FEED);
+		}
+		Intent intent = new Intent();
+		intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+		intent.setAction(SENSORO_ACTION);
+		sendBroadcast(intent);
+	}
+
+	/**
+	 * Description: 发生预定义的交互并获得结果 (交互层回调方法)
 	 * 
 	 * @param Action
 	 *            {@link Action}
@@ -266,7 +323,8 @@ public class SensoroFsmService extends FsmService {
 				parameterStringBuilder.append(STRING_LINE_FEED);
 				// 进入点的消息非空 --> 定义为进店消息
 				Intent intent = new Intent();
-				intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+				intent.putExtra(BROADCAST_NAME,
+						parameterStringBuilder.toString());
 				intent.setAction(SENSORO_ACTION);
 				sendBroadcast(intent);
 			}
