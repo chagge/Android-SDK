@@ -123,7 +123,7 @@ onAction(Action action)
 
 > 逻辑层回调方法:
 
-若在逻辑层实现业务，可以直接利用服务端的界面或者ITAPP来对Beacon进行配置。当与配置好的Beacon发生交互时, APP 会获得回调， APP 只需要关心配置好的Beacon的业务实现。
+若在逻辑层实现业务，可以直接利用服务端的界面或者ITAPP来对Beacon进行配置。当与配置好的Beacon发生交互时, APP 会获得回调， APP 只需要关心对应Beacon的业务实现。
 ```
 onEnterSpot(Spot spot, Zone zone)
 onLeaveSpot(Spot spot, Zone zone)
