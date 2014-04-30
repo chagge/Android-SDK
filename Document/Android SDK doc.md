@@ -146,7 +146,7 @@ public void onAction(Action action) {
 			intent.setAction(SENSORO_ACTION);
 			sendBroadcast(intent);
 			//这里将数据通过广播发送出去
-			//开发者可以适用其他方法自行处理这些参数
+			//开发者可以使用其他方法自行处理这些参数
 		}
 	}
 }
@@ -233,7 +233,7 @@ onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一�
 		intent.setAction(SENSORO_ACTION);
 		sendBroadcast(intent);
 		//这里将数据通过广播发送出去
-			//开发者可以适用其他方法自行处理这些参数
+		//开发者可以使用其他方法自行处理这些参数
 	}
 ```
 
@@ -282,6 +282,6 @@ String minor
 		intent.setAction(SENSORO_ACTION);
 		sendBroadcast(intent);
 		//这里将数据通过广播发送出去
-			//开发者可以适用其他方法自行处理这些参数
+		//开发者可以使用其他方法自行处理这些参数
 	}
 ```
