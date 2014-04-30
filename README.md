@@ -115,7 +115,7 @@ FsmService中的回调函数分为三层，开发者根据业务需求，选择�
 
 > 交互层回调方法:
 
-若在交互层实现业务，可以直接利用服务端的界面来定义交互的触发条件。当后台预定义的交互发生时，APP 会获得回调， APP 只需要关心交互的界面实现。
+若在交互层实现业务，可以直接利用服务端的界面来定义交互的触发条件。当后台预定义的交互发生时，APP 会获得回调， APP 只需要关心交互的业务实现。
 
 ```
 onAction(Action action)
@@ -123,17 +123,19 @@ onAction(Action action)
 
 > 逻辑层回调方法:
 
+若在逻辑层实现业务，可以直接利用服务端的界面或者ITAPP来对Beacon进行配置。当与配置好的Beacon发生交互时, APP 会获得回调， APP 只需要关心配置好的Beacon的业务实现。
 ```
 onEnterSpot(Spot spot, Zone zone)
 onLeaveSpot(Spot spot, Zone zone)
 onStaySpot(Spot spot, Zone zone, long seconds)
 onEnterZone(Zone zone, Spot spot)
-onLeaveZone(Zone zone, Spot spo)
+onLeaveZone(Zone zone, Spot spot)
 onStayZone(Zone zone, Spot spot, long seconds)
 ```
 
 > 物理层回调方法:
 
+若在物理层实现业务，不需要对Beacon进行配置,只需要知道Beacon的uuid,major和minor。当有Beacon出现或消失时, APP 会获得回调， APP 只需要根据Beacon的uuid,major和minor进行业务实现。
 ```
 onNew(Beacon)
 onGone(Beacon)
