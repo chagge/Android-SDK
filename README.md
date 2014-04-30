@@ -1,4 +1,3 @@
-
 Sensoro Android SDK 入门教程 
 ===============================
 重要提示:此Sdk运行需满足两个条件,Android设备支持4.0蓝牙,Android设备系统不低于4.3 代码判断参见第二步
@@ -41,8 +40,11 @@ private void check() {
 SDK需要如下四个jar包,开发者可从Example工程中得到
 
 android-logging-log4j-1.0.3.jar
+
 concurrentlinkedhashmap-lru-1.4.jar
+
 log4j-1.2.17.jar
+
 sensorobeacon.jar
 
 
@@ -112,11 +114,11 @@ public void stopFsmService() {
 
 FsmService中9打回调函数分为三层,开发者在回调函数中实现自己的业务逻辑即可
 
-> 物理层回调方法:
+
+> 交互层回调方法:
 
 ```
-onNew(Beacon)
-onGone(Beacon)
+onAction(Action action)
 ```
 
 > 逻辑层回调方法:
@@ -130,10 +132,11 @@ onLeaveZone(Zone zone, Spot spo)
 onStayZone(Zone zone, Spot spot, long seconds)
 ```
 
-> 交互层回调方法:
+> 物理层回调方法:
 
 ```
-onAction(Action action)
+onNew(Beacon)
+onGone(Beacon)
 ```
 
 
@@ -147,10 +150,9 @@ onAction(Action action)
 
 > 使用ItApp为Beacon配置基本参数(可选)
 
-** 
 注:
 1. 使用SDK之前要配置您的Beacon.如果开发者没有配置,回调函数中获取到的数据就没有自行配置的内容,也就是说不能够完成相关的业务逻辑.
-2. 即使开发者不配置Beacon,只会影响交互层回调函数的触发,但不影响物理层和逻辑层回调函数的触发.
-**
+2. 如果开发者不配置Beacon,将只触发物理层回调,不会触发逻辑层和交互层回调.
+
 
 如果开发者想进一步了解如何使用SDK,请参见 Android SDK doc.md
