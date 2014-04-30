@@ -1,217 +1,156 @@
-APP 与 SDK 交互的对外交互接口
-==================================
-> 版本号 alpha
+
+Sensoro Android SDK 入门教程 
+===============================
+重要提示:此Sdk运行需满足两个条件,Android设备支持4.0蓝牙,Android设备系统不低于4.3 代码判断参见第二步
 
 
-# 版本要求
-目前该sdk要求Android终端支持蓝牙4.0(低功耗蓝牙),并且Android系统版本不低于Android4.3(后续版本会支持低版本的android系统),所以建议您在开发APP时加入蓝牙版本和和系统版本的校验,校验的代码参见Example代码.
-# 使用简介
-在 Android 平台， SDK 和 APP 之间的交互通过继承FsmService类来实现。在回调函数中完成需要的业务操作。
+> SDK和Example下载地址
 
-# 生命周期接口
-这里假设您继承自FsmService的类的名称是SensoroFsmService
+```
+https://github.com/sensoro/Android-SDK
+```
 
-## SensoroSense
-该类用于启动和关闭sdk功能
-> 获取SensoroSense实例的函数
+# Step 1:检测环境
+
+开发者需检测需检测当前硬件环境是否能运行SDK
+
+> 示例代码
 
 
 ```
-public static SensoroSense getIntance(Context context, String appID, String appKey)
-```
-<table>
-	<tr>
-		<td>参数</td>
-		<td>类型</td>		
-		<td>说明</td>	
-	<tr/> 
-	
-	<tr>
-		<td>context</td>
-		<td>Context</td>		
-		<td>继承自Context的类,如Activity或Service</td>	
-	<tr/>
-	<tr>
-		<td>appID</td>
-		<td>String</td>		
-		<td>由SDK提供商提供的appID,每个APP对应一个appID</td>	
-	<tr/>
-	<tr>
-		<td>appKey</td>
-		<td>String</td>		
-		<td>备用,目前没有使用,传递null即可</td>	
-	<tr/>
-</table>
-
-> 代码示例
-```
-SensoroSense sensoroSense = SensoroSense.getIntance(context, "1", null)
-```
-
-## 开始：
-
-```
-public void startService(Context context, Intent intent)
-```
-
-> 代码示例
-
-```
-Intent intent = new Intent();
-intent.setClass(this, SensoroFsmService.class);
-sensoroSense.startService(this, intent);
-```
-
-## 配置
-
-```
-public void setConfiguration(Configuration configuration)
-```
-
-> Configuration类用于对SDK进行配置,对该配置方法的调用要早于startService才会生效,Configuration配置函数说明如下:
-
-### setRemoteLog(boolean remoteLog)
-配置网络调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
-### setLocalLog(boolean localLog)
-配置本地调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
-### setOffLine(boolean offLine) 
-配置离线功能(预加载功能)是否开启
-### setSticky(boolean isSticky)
-配置SDK服务被Kill后是否自动重新启动
-### setExtra(HashMap<String, Boolean> option)
-配置其他的参数,该方法仅用于开发模式
-
-
-> 配置代码如下:
-
-```
-Configuration.Builder builder = new Configuration.Builder();
-builder.setLocalLog(true).setOffLine(false);
-sensoroSense.setConfiguration(builder.create());
-sensoroSense.startService(this, intent);
-```
-
-## 结束：
-
-```
-void stopService(Intent intent) // 结束服务
-
-```
-> 代码示例
-
-```
-Intent intent = new Intent();
-intent.setClass(this, SensoroFsmService.class);
-sensoroSense.stopService(intent);
-```
-
-# 层级说明
-SDK分为交互层,逻辑层和物理层,开发者可以根据不同的业务需求,选择不同的层次进行开发
-
-## 交互层
-
-在这一层 APP 只关心交互导致的结果，并不关心交互如何发生。比如，交互的结果是获得了积分，而产生积分的交互有可能是进入、离开或停留，任何一种交互最终都会导致“获得积分”的结果，规则和参数可在服务端配置。这个层次的 APP 只关心现在积分被触发了，需要如何处理，并不关心是什么触发了这个结果。
-
-
-
-### 回调接口：
-
-```
-onAction(Action action) // 回调：发生预定义的交互并获得结果
-```
-
-```
-Action { // 交互结果
-String type, // 交互结果的类型：提示，积分，发券
-HashMap param, // 开发者自行配置的信息，交互参数，积分URL，发券URL等
-String action, // 交互，如：enter_spot(进入点)，leave_spot(离开点)，stay_spot(点停留)，enter_zone(进入区)，leave_zone(离开区)，stay_zone(区停留)
-Spot spot, // 交互发生的点
-Zone zone, // 交互发生的区
-}
-```
-## 逻辑层
-
-在这一层，当事件发生时，SDK会把交互发生的场景信息（类似POI）通知给APP，APP可直接处理。发生的事件包括进入点,离开点,停留点,进入区域,离开区域,停留区域.区域是有多个Beacon组成的逻辑区域.点或者区域信息可在服务器端配置.这个层次APP可以获取到在服务器端自行配置的点或者区域的信息.
-
-点，逻辑上，一个 beacon 就对应着一个点。
-
-> 点的数据结构
-
-
-```
-Spot: {
-String name, // 名字
-String type, // beacon 的 type，如，店铺，广告牌，
-String address, // 地址：以 path 结构组织
-float lat, // 经度
-float lon, // 纬度
-// -- 扩展，每个 app 可不同
-String id, // 开发者自行定义的 id
-String[] zids, // 点在这个 APP 里属于什么区,开发者自己定义的区域id的数组
-Map params, // 开发者自行配置的信息
+private void check() {
+	BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	if (bluetoothAdapter != null) {
+		if (getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_BLUETOOTH_LE)) {
+			isSupportBLE = true;//是否支持蓝牙低功耗(蓝牙4.0功能)
+		} else {
+			isSupportBLE = false;//是否支持蓝牙低功耗(蓝牙4.0功能)
+		}
+		if (bluetoothAdapter.isEnabled()) {
+			isBlueToothOpen = true;//蓝牙已经开启
+		} else {
+			isBlueToothOpen = false;//蓝牙未开启
+		}
+	}
 }
 ```
 
-### 查询接口：
+# Step 2:将SDK需要的jar包导入工程
+
+SDK需要如下四个jar包,开发者可从Example工程中得到
+
+android-logging-log4j-1.0.3.jar
+concurrentlinkedhashmap-lru-1.4.jar
+log4j-1.2.17.jar
+sensorobeacon.jar
+
+
+# Step 3:构建自己的FsmService
+
+## 使用Sdk必不可少FsmService
+开发者需要写一个类继承自FsmService
 
 ```
-Spot[] getSpots() // 查询：当前所在的点，有可能在多个点的交叉区
+public class ExampleFsmService extends FsmService 
 ```
 
-### 回调接口：
+## 启动这个Service
+
+> 示例代码
+
 
 ```
-onEnterSpot(Spot spot, Zone zone) // 回调：进入点
-onLeaveSpot(Spot spot, Zone zone) // 回调：离开点
-onStaySpot(Spot spot, Zone zone, int seconds) // 回调：在点停留，若一直停留，则多次回调，间隔为最小停留时间单位
-```
+public void startFsmService() {
+    String APP_ID = "3";
+	String APP_KEY = null;
+	SensoroSense sensoroSense = null;
 
-区域，由多个点构成。区是为 APP 高度定制的概念.一点可能属于多个区域
-> 区域的数据结构
-> 
+	// 只有设备支持BLE并且蓝牙开启,才能保证SDK正常使用. 用户可以自行处理.
+
+	if (isSupportBLE && isBlueToothOpen) {
+		/**
+		 * 获取SensoroSense的实例. 第一个参数为context;
+		 * 第二个参数是APP_ID,不同APP需要向Sensoro咨询申请不同的APP_ID;
+		 * 第三个参数是APP_KEY,不同APP需要不同的APP_KEY.该参数暂未使用. eg:
+		 * demo中设置测试APP_ID为1,APP_KEY为null.
+		 * 
+		 */
+		if (sensoroSense == null)
+			sensoroSense = SensoroSense.getIntance(this, APP_ID, APP_KEY);
+		/**
+		 * 启动用户自定义Service,获取Beacon触发的回调函数. 第一个参数为Context;
+		 * 第二个参数intent表示启动用户自定义service的intent; 
+		 * local_log,表示本地log存储 bool remote_log,表示向SDK后台发送log信息 } eg:
+		 * demo中设置允许重新启动,log默认均开启.
+		 * 
+		 */
+		Intent intent = new Intent();
+		intent.setClass(this, ExampleFsmService.class);
+		sensoroSense.startService(this, intent);
+	} else {
+		// TODO 用户自行处理,demo中禁止启动APP
+		System.exit(0);
+	}
+}
 ```
-Zone: {
-String id, // 开发者自行定义的区的 id,这个id对应spot.zids的数组的一个zid
-Map params, // 开发者自行配置的信息
+## 停止Service
+
+> 示例代码
+
+
+```
+public void stopFsmService() {
+	sensoroSense = SensoroSense.getIntance(this, APP_ID, APP_KEY);
+	Intent intent = new Intent();
+	intent.setClass(this, ExampleFsmService.class);
+	sensoroSense.stopService(intent);
 }
 ```
 
-## 查询接口：
-```
-Zone[] getZones() // 查询：当前所在的区，有可能在多个区的交叉区
-```
+# Step 4:实现FsmService中的回调函数
 
-## 回调接口：
-```
-onEnterZone(Zone zone, Spot spot) // 回调：进入区
-onLeaveZone(Zone zone, Spot spot) // 回调：离开区
-onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一直停留，则多次回调，间隔为最小停留时间单位
-```
+FsmService中9打回调函数分为三层,开发者在回调函数中实现自己的业务逻辑即可
 
-注：onEnterZone(zone1, spot1) 和 onEnterSpot(spot1, zone1) 的区别在于，前者意味着“从 spot1 进入 zone1”，后者意味着“进入 spot1，而且 spot1 从属于 zone1”（zone 也可能为 null，以表达 spot 并不从属于任何的 zone）。若 zone1 包含 3 个 spot ，依次经过各个点，则后者可能会被调用 3 次，而前者只会被调用 1 次。
-
-# 物理层
-
-在这一层,当有新的Beacon出现或者Beacon消失时,SDK会把Beacon的uuid,major和minor通知给APP,APP可直接处理.这个层次APP获取的都是底层的硬件信号.
-
-## 查询接口：
+> 物理层回调方法:
 
 ```
-Beacon[] getBeacons() // 查询：当前所在物理区域，有可能在多个物理区域的交叉区
+onNew(Beacon)
+onGone(Beacon)
 ```
 
-##回调接口：
+> 逻辑层回调方法:
 
 ```
-onNew(Beacon beacon) // 回调：进入物理区域
-onGone(Beacon beacon) //回调：离开物理区域
+onEnterSpot(Spot spot, Zone zone)
+onLeaveSpot(Spot spot, Zone zone)
+onStaySpot(Spot spot, Zone zone, long seconds)
+onEnterZone(Zone zone, Spot spot)
+onLeaveZone(Zone zone, Spot spo)
+onStayZone(Zone zone, Spot spot, long seconds)
 ```
-> Beacon的数据结构
+
+> 交互层回调方法:
 
 ```
-Beacon { 
-String uuid, // BLE 无线电信号内包含的唯一性 id
-String major,
-String minor
-}
+onAction(Action action)
 ```
+
+
+经过如上的4步,开发者已经能够使用该SDK了,如果需要和业务逻辑进行结合,参见Step 5
+
+# Step 5:配置Beacon
+
+有两种方法可以配置Beacon
+
+> 使用后台配置系统配置Beacon的拓展参数
+
+> 使用ItApp为Beacon配置基本参数(可选)
+
+** 
+注:
+1. 使用SDK之前要配置您的Beacon.如果开发者没有配置,回调函数中获取到的数据就没有自行配置的内容,也就是说不能够完成相关的业务逻辑.
+2. 即使开发者不配置Beacon,只会影响交互层回调函数的触发,但不影响物理层和逻辑层回调函数的触发.
+**
+
+如果开发者想进一步了解如何使用SDK,请参见 Android SDK doc.md
