@@ -70,23 +70,16 @@ public void setConfiguration(Configuration configuration)
 
 > Configuration类用于对SDK进行配置,对该配置方法的调用要早于startService才会生效,Configuration配置函数说明如下:
 
-### setRemoteLog(boolean remoteLog)
-配置网络调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
+
 ### setLocalLog(boolean localLog)
 配置本地调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
-### setOffLine(boolean offLine) 
-配置离线功能(预加载功能)是否开启
-### setSticky(boolean isSticky)
-配置SDK服务被Kill后是否自动重新启动
-### setExtra(HashMap<String, Boolean> option)
-配置其他的参数,该方法仅用于开发模式
 
 
 > 配置代码如下:
 
 ```
 Configuration.Builder builder = new Configuration.Builder();
-builder.setLocalLog(true).setOffLine(false);
+builder.setLocalLog(true);
 sensoroSense.setConfiguration(builder.create());
 sensoroSense.startService(this, intent);
 ```
@@ -110,7 +103,7 @@ SDK分为交互层,逻辑层和物理层,开发者可以根据不同的业务需
 
 ## 交互层
 
-在这一层 APP 只关心交互导致的结果，并不关心交互如何发生。比如，交互的结果是获得了积分，而产生积分的交互有可能是进入、离开或停留，任何一种交互最终都会导致“获得积分”的结果，规则和参数可在服务端配置。这个层次的 APP 只关心现在积分被触发了，需要如何处理，并不关心是什么触发了这个结果。
+在这一层 APP 只关心交互导致的结果，并不关心交互如何发生。比如，交互的结果是获得了积分，而产生积分的交互有可能是进入、离开或停留，任何一种交互最终都会导致“获得积分”的结果，规则和参数可在服务端配置。这个层次的 APP 只关心现在积分被触发了，需要如何处理，并不关心是什么触发了这个结果。交互层的信息需要在web端进行配置,如果不配置交互层的数据,就不会又交互层的回调函数触发
 
 
 
@@ -131,7 +124,7 @@ Zone zone, // 交互发生的区
 ```
 ## 逻辑层
 
-在这一层，当事件发生时，SDK会把交互发生的场景信息（类似POI）通知给APP，APP可直接处理。发生的事件包括进入点,离开点,停留点,进入区域,离开区域,停留区域.区域是有多个Beacon组成的逻辑区域.点或者区域信息可在服务器端配置.这个层次APP可以获取到在服务器端自行配置的点或者区域的信息.
+在这一层，当事件发生时，SDK会把交互发生的场景信息（类似POI）通知给APP，APP可直接处理。发生的事件包括进入点,离开点,停留点,进入区域,离开区域,停留区域.区域是有多个Beacon组成的逻辑区域.点或者区域信息可在服务器端配置.这个层次APP可以获取到在服务器端自行配置的点或者区域的信息.逻辑层的信息需要使用ITApp或者web页面进行配置,如果没有配置,则不会触发逻辑层的回调函数.
 
 点，逻辑上，一个 beacon 就对应着一个点。
 
@@ -192,7 +185,7 @@ onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一�
 
 # 物理层
 
-在这一层,当有新的Beacon出现或者Beacon消失时,SDK会把Beacon的uuid,major和minor通知给APP,APP可直接处理.这个层次APP获取的都是底层的硬件信号.
+在这一层,当有新的Beacon出现或者Beacon消失时,SDK会把Beacon的uuid,major和minor通知给APP,APP可直接处理.这个层次APP获取的都是底层的硬件信号.物理层不需要进行任何的配置就可以触发
 
 ## 查询接口：
 
