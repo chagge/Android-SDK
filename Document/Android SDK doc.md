@@ -214,27 +214,26 @@ onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一�
 > 代码示例
 
 ```
-	public void onEnterSpot(Spot spot, Zone zone) {
-		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
-		StringBuilder builder = new StringBuilder();
-		builder.append(STRING_ENTER_SPOT);
-		builder.append(NAME);
-		builder.append(spot.getName());
+public void onEnterSpot(Spot spot, Zone zone) {
+	// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
+	StringBuilder builder = new StringBuilder();
+	builder.append(STRING_ENTER_SPOT);
+	builder.append(NAME);
+	builder.append(spot.getName());
+	builder.append(STRING_LINE_FEED);
+	Map<String, String> param = spot.getParam();
+	if (param != null) { // 开发者在SDK server中没配置可能为空
+		builder.append(PARAM);
+		builder.append(param.toString());
 		builder.append(STRING_LINE_FEED);
-
-		Map<String, String> param = spot.getParam();
-		if (param != null) { // 开发者在SDK server中没配置可能为空
-			builder.append(PARAM);
-			builder.append(param.toString());
-			builder.append(STRING_LINE_FEED);
-		}
-		Intent intent = new Intent();
-		intent.putExtra(BROADCAST_NAME, builder.toString());
-		intent.setAction(SENSORO_ACTION);
-		sendBroadcast(intent);
-		//这里将数据通过广播发送出去
-		//开发者可以使用其他方法自行处理这些参数
 	}
+	Intent intent = new Intent();
+	intent.putExtra(BROADCAST_NAME, builder.toString());
+	intent.setAction(SENSORO_ACTION);
+	sendBroadcast(intent);
+	//这里将数据通过广播发送出去
+	//开发者可以使用其他方法自行处理这些参数
+}
 ```
 
 注：onEnterZone(zone1, spot1) 和 onEnterSpot(spot1, zone1) 的区别在于，前者意味着“从 spot1 进入 zone1”，后者意味着“进入 spot1，而且 spot1 从属于 zone1”（zone 也可能为 null，以表达 spot 并不从属于任何的 zone）。若 zone1 包含 3 个 spot ，依次经过各个点，则后者可能会被调用 3 次，而前者只会被调用 1 次。
@@ -268,20 +267,20 @@ String minor
 > 代码示例
 
 ```
-	public void onNew(Beacon beacon) {
-		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
-		StringBuilder builder = new StringBuilder();
-		builder.append(STRING_NEW_BEACON);
-		builder.append(MAJOR);
-		builder.append(beacon.getMajor());
-		builder.append(MINOR);
-		builder.append(beacon.getMinor());
-		builder.append(STRING_LINE_FEED);
-		Intent intent = new Intent();
-		intent.putExtra(BROADCAST_NAME, builder.toString());
-		intent.setAction(SENSORO_ACTION);
-		sendBroadcast(intent);
-		//这里将数据通过广播发送出去
-		//开发者可以使用其他方法自行处理这些参数
-	}
+public void onNew(Beacon beacon) {
+	// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
+	StringBuilder builder = new StringBuilder();
+	builder.append(STRING_NEW_BEACON);
+	builder.append(MAJOR);
+	builder.append(beacon.getMajor());
+	builder.append(MINOR);
+	builder.append(beacon.getMinor());
+	builder.append(STRING_LINE_FEED);
+	Intent intent = new Intent();
+	intent.putExtra(BROADCAST_NAME, builder.toString());
+	intent.setAction(SENSORO_ACTION);
+	sendBroadcast(intent);
+	//这里将数据通过广播发送出去
+	//开发者可以使用其他方法自行处理这些参数
+}
 ```
