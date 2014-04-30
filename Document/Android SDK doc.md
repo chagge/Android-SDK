@@ -135,16 +135,18 @@ public void onAction(Action action) {
 	String act = action.getAction();
 	if (act.equals(ENTER_SPOT)) {
 		if (message != null) {
-			StringBuilder parameterStringBuilder = new StringBuilder();
-			parameterStringBuilder.append(STRING_ATION);
-			parameterStringBuilder.append(ENTER_MESSAGE);
-			parameterStringBuilder.append(STRING_LINE_FEED);
+			StringBuilder builder = new StringBuilder();
+			builder.append(STRING_ATION);
+			builder.append(ENTER_MESSAGE);
+			builder.append(STRING_LINE_FEED);
 			// 进入点的消息非空 --> 定义为进店消息
 			Intent intent = new Intent();
 			intent.putExtra(BROADCAST_NAME,
-					parameterStringBuilder.toString());
+					builder.toString());
 			intent.setAction(SENSORO_ACTION);
 			sendBroadcast(intent);
+			//这里将数据通过广播发送出去
+			//开发者可以适用其他方法自行处理这些参数
 		}
 	}
 }
@@ -214,22 +216,24 @@ onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一�
 ```
 	public void onEnterSpot(Spot spot, Zone zone) {
 		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
-		StringBuilder parameterStringBuilder = new StringBuilder();
-		parameterStringBuilder.append(STRING_ENTER_SPOT);
-		parameterStringBuilder.append(NAME);
-		parameterStringBuilder.append(spot.getName());
-		parameterStringBuilder.append(STRING_LINE_FEED);
+		StringBuilder builder = new StringBuilder();
+		builder.append(STRING_ENTER_SPOT);
+		builder.append(NAME);
+		builder.append(spot.getName());
+		builder.append(STRING_LINE_FEED);
 
 		Map<String, String> param = spot.getParam();
 		if (param != null) { // 开发者在SDK server中没配置可能为空
-			parameterStringBuilder.append(PARAM);
-			parameterStringBuilder.append(param.toString());
-			parameterStringBuilder.append(STRING_LINE_FEED);
+			builder.append(PARAM);
+			builder.append(param.toString());
+			builder.append(STRING_LINE_FEED);
 		}
 		Intent intent = new Intent();
-		intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+		intent.putExtra(BROADCAST_NAME, builder.toString());
 		intent.setAction(SENSORO_ACTION);
 		sendBroadcast(intent);
+		//这里将数据通过广播发送出去
+			//开发者可以适用其他方法自行处理这些参数
 	}
 ```
 
@@ -266,16 +270,18 @@ String minor
 ```
 	public void onNew(Beacon beacon) {
 		// TODO 以下为开发者自行处理,demo中通过广播发送给activity显示
-		StringBuilder parameterStringBuilder = new StringBuilder();
-		parameterStringBuilder.append(STRING_NEW_BEACON);
-		parameterStringBuilder.append(MAJOR);
-		parameterStringBuilder.append(beacon.getMajor());
-		parameterStringBuilder.append(MINOR);
-		parameterStringBuilder.append(beacon.getMinor());
-		parameterStringBuilder.append(STRING_LINE_FEED);
+		StringBuilder builder = new StringBuilder();
+		builder.append(STRING_NEW_BEACON);
+		builder.append(MAJOR);
+		builder.append(beacon.getMajor());
+		builder.append(MINOR);
+		builder.append(beacon.getMinor());
+		builder.append(STRING_LINE_FEED);
 		Intent intent = new Intent();
-		intent.putExtra(BROADCAST_NAME, parameterStringBuilder.toString());
+		intent.putExtra(BROADCAST_NAME, builder.toString());
 		intent.setAction(SENSORO_ACTION);
 		sendBroadcast(intent);
+		//这里将数据通过广播发送出去
+			//开发者可以适用其他方法自行处理这些参数
 	}
 ```
