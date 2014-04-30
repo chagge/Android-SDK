@@ -112,7 +112,7 @@ public void stopFsmService() {
 
 # Step 4:实现FsmService中的回调函数
 
-FsmService中9打回调函数分为三层,开发者在回调函数中实现自己的业务逻辑即可
+FsmService中9大回调函数分为三层,开发者在回调函数中实现自己的业务逻辑即可
 
 
 > 交互层回调方法:
