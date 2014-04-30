@@ -122,6 +122,37 @@ Spot spot, // 交互发生的点
 Zone zone, // 交互发生的区
 }
 ```
+
+##示例代码
+
+```
+public void onAction(Action action) {
+		Map<String, String> param = action.getParam();
+		// param是一个拓展参数,可以存储很多有用的数据,比如下面的例子,key是type,value是fixedcorner
+		// 证明这个beacon是一个淘金角区域,还可以设置更多,例如车站,马路名字等等与拓展信息
+		String message = null;
+		if (param != null) { // 开发者在SDK server中没配置可能为空
+			message = param.get(MESSAGE);
+		}
+		String act = action.getAction();
+		if (act.equals(ENTER_SPOT)) {
+			// 进入某个点
+			if (message != null) {
+				StringBuilder parameterStringBuilder = new StringBuilder();
+				parameterStringBuilder.append(STRING_ATION);
+				parameterStringBuilder.append(ENTER_MESSAGE);
+				parameterStringBuilder.append(STRING_LINE_FEED);
+				// 进入点的消息非空 --> 定义为进店消息
+				Intent intent = new Intent();
+				intent.putExtra(BROADCAST_NAME,
+						parameterStringBuilder.toString());
+				intent.setAction(SENSORO_ACTION);
+				sendBroadcast(intent);
+			}
+		}
+	}
+```
+
 ## 逻辑层
 
 在这一层，当事件发生时，SDK会把交互发生的场景信息（类似POI）通知给APP，APP可直接处理。发生的事件包括进入点,离开点,停留点,进入区域,离开区域,停留区域.区域是有多个Beacon组成的逻辑区域.点或者区域信息可在服务器端配置.这个层次APP可以获取到在服务器端自行配置的点或者区域的信息.逻辑层的信息需要使用ITApp或者web页面进行配置,如果没有配置,则不会触发逻辑层的回调函数.
