@@ -150,7 +150,7 @@ onGone(Beacon)
 
 > 使用后台配置系统配置Beacon的拓展参数
 
-> 使用ITApp为Beacon配置基本参数(可选)
+> 使用ITAPP为Beacon配置基本参数
 
 <b><pre>
 注:
