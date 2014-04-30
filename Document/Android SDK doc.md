@@ -128,15 +128,12 @@ Zone zone, // 交互发生的区
 ```
 public void onAction(Action action) {
 	Map<String, String> param = action.getParam();
-	// param是一个拓展参数,可以存储很多有用的数据,比如下面的例子,key是type,value是fixedcorner
-	// 证明这个beacon是一个淘金角区域,还可以设置更多,例如车站,马路名字等等与拓展信息
 	String message = null;
 	if (param != null) { // 开发者在SDK server中没配置可能为空
 		message = param.get(MESSAGE);
 	}
 	String act = action.getAction();
 	if (act.equals(ENTER_SPOT)) {
-		// 进入某个点
 		if (message != null) {
 			StringBuilder parameterStringBuilder = new StringBuilder();
 			parameterStringBuilder.append(STRING_ATION);
