@@ -68,14 +68,14 @@ sensoroSense.startService(this, intent);
 public void setConfiguration(Configuration configuration)
 ```
 
-> Configuration类用于对SDK进行配置,对该配置方法的调用要早于startService才会生效,Configuration配置方法如下:
+> Configuration类用于对SDK进行配置,对该配置方法的调用要早于startService才会生效,Configuration配置函数说明如下:
 
 ### setRemoteLog(boolean remoteLog)
-配置网络调试信息是否开启
+配置网络调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
 ### setLocalLog(boolean localLog)
-配置本地调试信息是否开启
+配置本地调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
 ### setOffLine(boolean offLine) 
-配置离线功能(预加载)功能是否开启
+配置离线功能(预加载功能)是否开启
 ### setSticky(boolean isSticky)
 配置SDK服务被Kill后是否自动重新启动
 ### setExtra(HashMap<String, Boolean> option)
