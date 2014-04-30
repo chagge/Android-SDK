@@ -1,5 +1,8 @@
 APP 与 SDK 交互的对外交互接口
 ==================================
+> 版本号 alpha
+
+
 # 版本要求
 目前该sdk要求Android终端支持蓝牙4.0(低功耗蓝牙),并且Android系统版本不低于Android4.3(后续版本会支持低版本的android系统),所以建议您在开发APP时加入蓝牙版本和和系统版本的校验,校验的代码参见Example代码.
 # 使用简介
@@ -48,41 +51,44 @@ SensoroSense sensoroSense = SensoroSense.getIntance(context, "1", null)
 ## 开始：
 
 ```
-public void startService(Context context, Intent intent, boolean isSticky,
-			HashMap<String, Boolean> logStatusMap)
+public void startService(Context context, Intent intent)
 ```
-
-> HashMap<String, Boolean> logStatusMap 调试信息参数,可选key为local_log和remote_log,可以传递null
-
-
-<table>
-	<tr>
-		<td>key</td>
-		<td>类型</td>		
-		<td>说明</td>	
-	<tr/> 
-	
-	<tr>
-		<td>local_log</td>
-		<td>Boolean</td>		
-		<td>是否保存本地调试信息</td>	
-	<tr/>
-	<tr>
-		<td>remote_log</td>
-		<td>Boolean</td>		
-		<td>是否发送网络调试信息</td>	
-	<tr/>
-</table>
 
 > 代码示例
 
 ```
 Intent intent = new Intent();
 intent.setClass(this, SensoroFsmService.class);
-HashMap<String, Boolean> map = new HashMap<String, Boolean>();
-map.put("remote_log", true);
-map.put("local_log", true);
-sensoroSense.startService(this, intent, false, map);
+sensoroSense.startService(this, intent);
+```
+
+## 配置
+
+```
+public void setConfiguration(Configuration configuration)
+```
+
+> Configuration类用于对SDK进行配置,对该配置方法的调用要早于startService才会生效,Configuration配置函数说明如下:
+
+### setRemoteLog(boolean remoteLog)
+配置网络调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
+### setLocalLog(boolean localLog)
+配置本地调试信息是否开启,该方法主要为了方便开发者进行SDK的调试
+### setOffLine(boolean offLine) 
+配置离线功能(预加载功能)是否开启
+### setSticky(boolean isSticky)
+配置SDK服务被Kill后是否自动重新启动
+### setExtra(HashMap<String, Boolean> option)
+配置其他的参数,该方法仅用于开发模式
+
+
+> 配置代码如下:
+
+```
+Configuration.Builder builder = new Configuration.Builder();
+builder.setLocalLog(true).setOffLine(false);
+sensoroSense.setConfiguration(builder.create());
+sensoroSense.startService(this, intent);
 ```
 
 ## 结束：
@@ -125,7 +131,7 @@ Zone zone, // 交互发生的区
 ```
 ## 逻辑层
 
-在这一层，当事件发生时，SDK 会把交互发生的场景信息（类似 POI）通知给 APP，APP 可直接处理。 
+在这一层，当事件发生时，SDK会把交互发生的场景信息（类似POI）通知给APP，APP可直接处理。发生的事件包括进入点,离开点,停留点,进入区域,离开区域,停留区域.区域是有多个Beacon组成的逻辑区域.点或者区域信息可在服务器端配置.这个层次APP可以获取到在服务器端自行配置的点或者区域的信息.
 
 点，逻辑上，一个 beacon 就对应着一个点。
 
@@ -186,7 +192,7 @@ onStayZone(Zone zone, Spot spot, int seconds) // 回调：在区停留，若一�
 
 # 物理层
 
-在这一层，基本就是 iBeacon 的接口包装。
+在这一层,当有新的Beacon出现或者Beacon消失时,SDK会把Beacon的uuid,major和minor通知给APP,APP可直接处理.这个层次APP获取的都是底层的硬件信号.
 
 ## 查询接口：
 
