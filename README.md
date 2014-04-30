@@ -39,14 +39,12 @@ private void check() {
 
 SDK需要如下四个jar包,开发者可从Example工程中得到
 
+```
 android-logging-log4j-1.0.3.jar
-
 concurrentlinkedhashmap-lru-1.4.jar
-
 log4j-1.2.17.jar
-
 sensorobeacon.jar
-
+```
 
 # Step 3:构建自己的FsmService
 
@@ -112,10 +110,12 @@ public void stopFsmService() {
 
 # Step 4:实现FsmService中的回调函数
 
-FsmService中9大回调函数分为三层,开发者在回调函数中实现自己的业务逻辑即可
+FsmService中的回调函数分为三层，开发者根据业务需求，选择合适的层次，并这个层次的回调函数中实现自己的业务逻辑即可。
 
 
 > 交互层回调方法:
+
+若在交互层实现业务，可以直接利用服务端的界面来定义交互的触发条件。当后台预定义的交互发生时，APP 会获得回调， APP 只需要关心交互的界面实现。
 
 ```
 onAction(Action action)
