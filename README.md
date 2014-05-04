@@ -1,17 +1,17 @@
 Sensoro Android SDK 入门教程 
 ===============================
-重要提示:此Sdk运行需满足两个条件,Android设备支持4.0蓝牙,Android设备系统不低于4.3
+重要提示：此 Sdk 运行需满足两个条件，Android 设备支持 4.0 蓝牙，Android 设备系统不低于 4.3
 
 
-> SDK和Example下载地址
+> SDK 和 Example 下载地址
 
 ```
 https://github.com/sensoro/Android-SDK
 ```
 
-# Step 1:检测环境
+# Step 1：检测环境
 
-开发者需检测需检测当前硬件环境是否能运行SDK
+开发者需检测需检测当前硬件环境是否能运行 SDK
 
 > 示例代码
 
