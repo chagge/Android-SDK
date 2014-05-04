@@ -35,7 +35,7 @@ private void check() {
 }
 ```
 
-# Step 2：将SDK需要的 jar 包导入工程
+# Step 2：将 SDK 需要的 jar 包导入工程
 
 SDK 需要如下四个 Jar 包，开发者可从 Example 工程中得到
 
