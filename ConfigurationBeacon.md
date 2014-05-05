@@ -69,7 +69,7 @@
 点击确认提交按钮,完成 Sensoro Beacon 的基本信息配置
 
 ![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/HzF.vlRu.scRL.l2u7yY5dzWWzwnUCcjj12**FdXlcg!/b/dGcjT6b2DAAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
-### Step 6：配置硬件参数
+## 配置硬件参数
 在 Sensoro Beacon 主界面选择配置硬件 
 
 ![](http://a3.qpic.cn/psb?/V11QMs7H1dTU7x/Ewrdu5ETG3vLAFE7EoeRqS7Vtd840TENH6P1E.Y7XyI!/b/dHQOtaVfDAAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
