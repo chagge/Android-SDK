@@ -30,7 +30,7 @@
 开发者根据 Major 与 Minor 选择相应 Sensoro Beacon 开始配置参数
 
 ```
-注: 1. Sensoro Beacon 的 Major 与 Minor 图中红线标注的 Major = 129 Minor = 2 
+注: 1. Sensoro Beacon 的 Major 与 Minor 图中红线标注的数字,前者是Major = 129 后者是Minor = 2 
        Major 与 Minor 是 Sensoro Beacon 的唯一标识符 不可更改
     2. Sensoro Beacon 与 ItApp 的距离
 ```
