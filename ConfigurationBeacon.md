@@ -11,21 +11,20 @@
 
 > 后台地址 :
 
-# ItApp 使用方法
+## ItApp 使用方法
 ===============================
 
-# Step 1：登录 ItApp
+### Step 1：登录 ItApp
 
 
-![结构](http://image.baidu.com/channel?c=%E7%9C%9F%E4%BA%BA%E7%A7%80%E5%9C%BA&fr=index)
+![](http://b279.photo.store.qq.com/psb?/V11QMs7H1dTU7x/k.FrIxBd1qAohDYE.8ruCzYctHhnVgFEngX.P*7DaiM!/b/dGGxTabNDAAA&bo=VQOAAgAAAAABAPM!)
 
 
 使用 ItApp 之前,首先需要向 Sensoro 申请开发者账户
 
-# Step 2：选择需要配置参数的 Sensoro Beacon
+### Step 2：选择需要配置参数的 Sensoro Beacon
 
-``插图``
-
+![](http://b279.photo.store.qq.com/psb?/V11QMs7H1dTU7x/OBY2jW.M3uLlZqnxR4zFfmCMZaUbx1P47lw9y.x.LQI!/b/dEY7WKYfDQAA&bo=VQOAAgAAAAABAPM!)
 登录后ItApp会自动检测周边的 Sensoro Beacon 并以列表形式展示
 
 开发者根据 Major 与 Minor 选择相应 Sensoro Beacon 开始配置参数
@@ -36,12 +35,12 @@
     2. Sensoro Beacon 与 ItApp 的距离
 ```
 
-# Step 3：配置店面信息
-``插图``
+### Step 3：配置店面信息
+![](http://a3.qpic.cn/psb?/V11QMs7H1dTU7x/GSjuPzCPCsANkfpBRX.ZdjJ6otccBGCY2SU9Thjonj0!/b/dBysuaW9DQAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
 选择需要配置的 Sensoro Beacon 后点击开始配置
 
-``插图``
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/1pmhSChvFgWrzL6IkFwtFfjHZysPz6tYrf1n4DfPlKA!/b/dG84T6a9DAAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
 依次填写 所在城市、区域、店面、分店信息
 
@@ -49,34 +48,34 @@
 
 地图选点点击后进入电子地图，选择您店铺的位置，如图
 
-``插图``
+![](http://a2.qpic.cn/psb?/V11QMs7H1dTU7x/vSG2A1xLCrcZ7DG.*Q8HAzmGEkLXe3NnEC.tXFXIstU!/b/dNaLJaUzJgAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
 选择店铺位置后，系统会记录经纬度。
 
-# Step 4：确认信号范围
+### Step 4：确认信号范围
 
 开发者手持 ItApp 在店内走动,以确保 Sensoro Beacon 信号覆盖所需区域
 
-``插图``
+![](http://a3.qpic.cn/psb?/V11QMs7H1dTU7x/X1osOOZ*sNcA0soeAE78A5U9LSJELUtSzEjDriO06xQ!/b/dLCqv6UDDQAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
-# Step 4：拍照记录
+### Step 4：拍照记录
 
 为 Sensoro Beacon 设置一张记录图片
 
-``插图``
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/jp22vVSaBlkew0A8klcBoA9atAXzCG0GiRmnsm64tC0!/b/dKHDU6bBCwAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
-# Step 5：确认提交
+### Step 5：确认提交
 
 点击确认提交按钮,完成 Sensoro Beacon 的基本信息配置
 
-``插图``
-# Step 6：配置硬件参数
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/HzF.vlRu.scRL.l2u7yY5dzWWzwnUCcjj12**FdXlcg!/b/dGcjT6b2DAAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
+### Step 6：配置硬件参数
 在 Sensoro Beacon 主界面选择配置硬件 
 
-``插图``
+![](http://a3.qpic.cn/psb?/V11QMs7H1dTU7x/Ewrdu5ETG3vLAFE7EoeRqS7Vtd840TENH6P1E.Y7XyI!/b/dHQOtaVfDAAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 进入以下界面
 
-``插图``
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/mi7Yr7t5Pdku813HEu4D*422Zs.Hq6jCE11jC.cpUuM!/b/dEliW6buCwAA&bo=VQOAAgAAAAABAPM!&rf=viewer_4)
 
 在本界面可以修改 Sensoro Beacon 的发射功率与发射频率
 
@@ -87,28 +86,28 @@
 请开发这谨慎选择
 
 
-# 后台配置系统使用方法
+## 后台配置系统使用方法
 后台配置系统地址:
 
-# Step 1：登录
+### Step 1：登录
 使用 Sensoro 提供的开发者账户登录配置系统
 
-``插图``
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/7J34qoYIz9Fe7*9hw5xDcwmhjLczRR0aqz6Ylmm1PW8!/b/dEfEVqYrDAAA&bo=0gHoAAAAAAADAB4!&rf=viewer_4)
 
 开发者需使用与 ItApp 同样的账户才能 查询到 ItApp 配置过的 Sensoro Beacon
 
-# Step 2：选择所需配置的 Sensoro Beacon
+### Step 2：选择所需配置的 Sensoro Beacon
 
 登陆管理服务器后,服务器会将您配置过的 Sensoro Beacon 全部显示出来 
 根据配置的数据选择所需 Sensoro Beacon 配置开发者参数
 
-``插图``
+![](http://a1.qpic.cn/psb?/V11QMs7H1dTU7x/qBkIvoQaVlnXB1XoiXd2d7sRXgQNd.6WjZ4N50d*RWo!/b/dDlGVaZADAAA&bo=.gKAAgAAAAADAF8!&rf=viewer_4)
 
 我们选择 Major = 4 Minor = 13 这个 Beacon 来配置开发者参数
 
-# Step 3：配置开发者参数
+### Step 3：配置开发者参数
 
-``插图``
+![](http://a2.qpic.cn/psb?/V11QMs7H1dTU7x/5fHgUmJb38WOFvwq*mFVYz8OR02FG.EyQylk4293WP8!/b/dLosKqUYKAAA&bo=ZAOAAgAAAAADAMA!&rf=viewer_4)
 
 > 蓝色区域
 
